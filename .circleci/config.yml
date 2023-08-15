@@ -9,6 +9,18 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/test-app
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - persist_to_workspace:
+          root: .
+          paths: .
       - run: yarn
   test:
     working_directory: ~/test-app
