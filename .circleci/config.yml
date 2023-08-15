@@ -12,6 +12,7 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           key: dependency-cache-{{ checksum "package.json" }}
+      - run: yarn
       - save_cache:
           name: Save Yarn Package Cache
           key: dependency-cache-{{ checksum "package.json" }}
@@ -20,7 +21,6 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
-      - run: yarn
   test:
     working_directory: ~/test-app
     docker:
@@ -29,9 +29,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/test-app
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          key: dependency-cache-{{ checksum "package.json" }}
       - run: yarn test
 
 workflows:
