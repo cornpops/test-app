@@ -6,13 +6,13 @@ jobs:
       - image: cimg/node:17.8
     steps:
       - checkout
-      - run: echo "this is the new build job"
+      - run: yarn
   test:
     docker:
       - image: cimg/node:17.8
     steps:
       - checkout
-      - run: echo "this is the new test job"
+      - run: yarn test
 
 workflows:
   build_and_test:
