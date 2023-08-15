@@ -31,10 +31,27 @@ jobs:
           at: ~/test-app
       - run: yarn test
 
+  deploy:
+    working_directory: ~/test-app
+    docker:
+      - image: cimg/node:20.5.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/test-app
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $SSH_USER@$SSH_HOST "cd ~/test-app && git pull && pm2 restart all"
+
 workflows:
-  build_and_test:
+  build_and_test_and deploy:
     jobs:
       - build
       - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - build
+            - test
