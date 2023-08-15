@@ -27,11 +27,11 @@ jobs:
       - image: cimg/node:20.5.1
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/test-app
       - restore_cache:
           name: Restore Yarn Package Cache
           key: dependency-cache-{{ checksum "package.json" }}
-      - attach_workspace:
-          at: ~/test-app
       - run: yarn test
 
 workflows:
