@@ -2,16 +2,21 @@ version: 2.1
 
 jobs:
   build:
+    working_directory: ~/test-app
     docker:
       - image: cimg/node:20.5.1
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/test-app
       - run: yarn
   test:
+    working_directory: ~/test-app
     docker:
       - image: cimg/node:20.5.1
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/test-app
       - run: yarn test
 
 workflows:
